@@ -1,6 +1,6 @@
 import random
 import string
-from typing import Protocol
+from typing import Protocol, Awaitable, Any
 
 from .message import Message, MessageType
 
@@ -45,10 +45,9 @@ class IOTService:
     async def get_device(self, device_id: str) -> Device:
         return self.devices[device_id]
 
-    async def run_program(self, program: list[Message]) -> None:
+    async def run_program(self, program: Awaitable[Any]) -> None:
         print("=====RUNNING PROGRAM======")
-        for device in program:
-            await self.send_msg(device)
+        await program
         print("=====END OF PROGRAM======")
 
     async def send_msg(self, msg: Message) -> None:
